@@ -32,14 +32,15 @@ export default {
   },
   data() {
     return {
-      messages: []
+      messages: [],
+      listenerRef: null
     };
   },
 
   created() {
     const messageRef = db.ref("messages").orderByChild("timestamp");
     // Listens for any changes in db and pushes it in messages
-    messageRef.on("child_added", snapshot => {
+    this.listenerRef = messageRef.on("child_added", snapshot => {
       const doc = snapshot.val();
       this.messages.push({
         id: doc.id,
@@ -50,9 +51,14 @@ export default {
     });
   },
 
+  beforeDestroyed() {
+    const messageRef = db.ref("messages");
+    messageRef.off("child_added", this.listenerRef);
+  },
+
   destroyed() {
-    const messageRef = db.ref("messages").orderByChild("timestamp");
-    messageRef.off();
+    console.log("im in destroyed");
+    console.log(this.listener);
   }
 };
 </script>
