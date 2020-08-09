@@ -2,7 +2,7 @@
   <div class="view-profile container">
     <div class="card">
       <h3 class="teal-text center">
-        {{ profile ? profile.username : "anonymous" }}
+        {{ profile.username }}
       </h3>
     </div>
   </div>

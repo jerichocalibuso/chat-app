@@ -48,6 +48,11 @@ export default {
         timestamp: moment(doc.timestamp).format("lll")
       });
     });
+  },
+
+  destroyed() {
+    const messageRef = db.ref("messages").orderByChild("timestamp");
+    messageRef.off();
   }
 };
 </script>

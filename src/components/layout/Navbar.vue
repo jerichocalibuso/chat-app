@@ -7,15 +7,17 @@
         >
 
         <ul class="right">
+          <li v-if="user">
+            <router-link :to="{ name: 'Chat' }">Chat</router-link>
+          </li>
           <li v-if="!user">
             <router-link :to="{ name: 'Welcome' }">Login</router-link>
           </li>
+
           <li v-if="user">
-            <router-link :to="{ name: 'Chat' }"><a>Chat</a></router-link>
-          </li>
-          <li v-if="user">
-            <router-link :to="{ name: 'ViewProfile', params: { id: user_id } }"
-              ><a>{{ this.username }}</a></router-link
+            <router-link
+              :to="{ name: 'ViewProfile', params: { id: user_id } }"
+              >{{ this.username }}</router-link
             >
           </li>
           <li v-if="user">
@@ -52,9 +54,7 @@ export default {
       if (user) {
         this.user = user;
         this.user_id = user.uid;
-        if (user.isAnonymous) {
-          this.username = "anonymous";
-        } else {
+        if (!user.isAnonymous) {
           this.username = user.email.split("@")[0];
         }
       } else {

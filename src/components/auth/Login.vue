@@ -3,9 +3,19 @@
     <a class="waves-effect waves-light btn " v-on:click="login">
       <i class="fab fa-google "></i> Login with Google</a
     >
-    <a class="waves-effect waves-light btn grey" v-on:click="anonymousLogin">
+    <a class="waves-effect waves-light btn grey" v-on:click="toggleAnonymous">
       <i class="far fa-user "></i> Login Anonymously</a
     >
+    <form v-if="isAnonymous" v-on:submit.prevent="anonymousLogin">
+      <label for="display-name">Display Name: </label>
+      <input
+        type="text"
+        name="display-name"
+        id="display-name"
+        v-model="username"
+      />
+      <button class="waves-effect waves-light btn">Submit</button>
+    </form>
   </div>
 </template>
 
@@ -18,7 +28,8 @@ export default {
     return {
       user_id: null,
       email: null,
-      username: null
+      username: null,
+      isAnonymous: false
     };
   },
   methods: {
@@ -44,7 +55,6 @@ export default {
       const anonUser = await firebase.auth().signInAnonymously();
       this.id = anonUser.user.uid;
       this.email = "anonymous";
-      this.username = "anonymous";
 
       db.ref(`users/${this.id}`).set({
         user_id: this.id,
@@ -54,6 +64,9 @@ export default {
       });
 
       this.$router.push({ name: "Chat", params: { username: this.username } });
+    },
+    toggleAnonymous() {
+      this.isAnonymous = !this.isAnonymous;
     }
   }
 };

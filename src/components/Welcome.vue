@@ -12,7 +12,7 @@
 <script>
 import Login from "@/components/auth/Login";
 export default {
-  name: "HelloWorld",
+  name: "Welcome",
   data() {
     return {
       name: null,
